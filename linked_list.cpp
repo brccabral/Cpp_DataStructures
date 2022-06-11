@@ -10,6 +10,8 @@ typedef struct Node
 void Insert(int data, int pos);
 void Print();
 void Print(Node *head);
+void PrintRecursive(Node *p);
+void ReversePrintRecursive(Node *p);
 void InsertEnd(int data);
 Node *InsertEnd(Node *head, int data);
 void Delete(int pos);
@@ -45,6 +47,9 @@ int main()
     head_local = InsertEnd(head_local, 6);
     head_local = InsertEnd(head_local, 5); // 2,4,6,5
     Print(head_local);
+    PrintRecursive(head_local);
+    ReversePrintRecursive(head_local);
+    printf("\n");
 
     head_local = Reverse(head_local);
     Print(head_local);
@@ -189,4 +194,27 @@ Node *Reverse(Node *head)
     }
     head = prev;
     return head;
+}
+
+void PrintRecursive(Node *p)
+{
+    // uses more memory for temp variables and functions stack
+    if (p == NULL)
+    {
+        printf("\n");
+        return;
+    }
+    printf("%d ", p->data);
+    PrintRecursive(p->next);
+}
+
+void ReversePrintRecursive(Node *p)
+{
+    // uses more memory for temp variables and functions stack
+    if (p == NULL)
+    {
+        return;
+    }
+    ReversePrintRecursive(p->next);
+    printf("%d ", p->data);
 }
