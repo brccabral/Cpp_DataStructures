@@ -17,6 +17,7 @@ Node *InsertEnd(Node *head, int data);
 void Delete(int pos);
 void Reverse();
 Node *Reverse(Node *head);
+void ReverseRecursive(Node *head);
 
 Node *head = NULL;
 
@@ -40,6 +41,8 @@ int main()
     Delete(d);
     Print();
     Reverse();
+    Print();
+    ReverseRecursive(head);
     Print();
 
     head_local = InsertEnd(head_local, 2);
@@ -217,4 +220,17 @@ void ReversePrintRecursive(Node *p)
     }
     ReversePrintRecursive(p->next);
     printf("%d ", p->data);
+}
+
+void ReverseRecursive(Node *p)
+{
+    if (p->next == NULL)
+    {
+        head = p;
+        return;
+    }
+    ReverseRecursive(p->next);
+    Node *q = p->next;
+    q->next = p;
+    p->next = NULL;
 }
