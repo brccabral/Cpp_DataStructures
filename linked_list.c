@@ -7,14 +7,12 @@ typedef struct Node
     struct Node *next;
 } Node;
 
-Node *head; // global
-
-void Insert(int x);
-void Print();
+Node *Insert(int x, Node *head);
+void Print(Node *head);
 
 int main()
 {
-    head = NULL; // empty list
+    Node *head = NULL;
 
     printf("How many numbers?\n");
     int n, i, x;
@@ -23,30 +21,30 @@ int main()
     {
         printf("Enter the number\n");
         scanf("%d", &x);
-        Insert(x);
+        head = Insert(x, head);
     }
-    Print();
+    Print(head);
 
     return (0);
 }
 
 // Insert at beginning of the list
-void Insert(int x)
+Node *Insert(int x, Node *head)
 {
     Node *temp = (Node *)malloc(sizeof(Node));
     temp->data = x;
     temp->next = head;
     head = temp;
+    return head;
 }
 
-void Print()
+void Print(Node *head)
 {
-    Node *temp = head;
     printf("List is:");
-    while (temp != NULL)
+    while (head != NULL)
     {
-        printf(" %d", temp->data);
-        temp = temp->next;
+        printf(" %d", head->data);
+        head = head->next;
     }
     printf("\n");
 }
