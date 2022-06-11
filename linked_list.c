@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node
+typedef struct Node
 {
     int data;
     struct Node *next;
-};
+} Node;
 
-struct Node *head; // global
+Node *head; // global
 
 void Insert(int x);
 void Print();
@@ -33,7 +33,7 @@ int main()
 // Insert at beginning of the list
 void Insert(int x)
 {
-    struct Node *temp = (struct Node *)malloc(sizeof(struct Node));
+    Node *temp = (Node *)malloc(sizeof(Node));
     temp->data = x;
     temp->next = head;
     head = temp;
@@ -41,7 +41,7 @@ void Insert(int x)
 
 void Print()
 {
-    struct Node *temp = head;
+    Node *temp = head;
     printf("List is:");
     while (temp != NULL)
     {
