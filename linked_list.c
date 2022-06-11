@@ -7,7 +7,7 @@ typedef struct Node
     struct Node *next;
 } Node;
 
-Node *Insert(int x, Node *head);
+void Insert(int x, Node **head);
 void Print(Node *head);
 
 int main()
@@ -21,7 +21,7 @@ int main()
     {
         printf("Enter the number\n");
         scanf("%d", &x);
-        head = Insert(x, head);
+        Insert(x, &head);
     }
     Print(head);
 
@@ -29,13 +29,12 @@ int main()
 }
 
 // Insert at beginning of the list
-Node *Insert(int x, Node *head)
+void Insert(int x, Node **pointerToHead)
 {
     Node *temp = (Node *)malloc(sizeof(Node));
     temp->data = x;
-    temp->next = head;
-    head = temp;
-    return head;
+    temp->next = *pointerToHead;
+    *pointerToHead = temp;
 }
 
 void Print(Node *head)
