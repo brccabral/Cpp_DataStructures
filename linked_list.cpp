@@ -9,14 +9,18 @@ typedef struct Node
 
 void Insert(int data, int pos);
 void Print();
+void Print(Node *head);
 void InsertEnd(int data);
+Node *InsertEnd(Node *head, int data);
 void Delete(int pos);
+void Reverse();
+Node *Reverse(Node *head);
 
-Node *head;
+Node *head = NULL;
 
 int main()
 {
-    head = NULL;
+    Node *head_local = NULL;
 
     // Insert(2, 1); // 2
     // Insert(3, 2); // 2,3
@@ -33,6 +37,17 @@ int main()
     scanf("%d", &d);
     Delete(d);
     Print();
+    Reverse();
+    Print();
+
+    head_local = InsertEnd(head_local, 2);
+    head_local = InsertEnd(head_local, 4);
+    head_local = InsertEnd(head_local, 6);
+    head_local = InsertEnd(head_local, 5); // 2,4,6,5
+    Print(head_local);
+
+    head_local = Reverse(head_local);
+    Print(head_local);
 
     return (0);
 }
@@ -73,6 +88,17 @@ void Print()
     printf("\n");
 }
 
+void Print(Node *head)
+{
+    printf("List is:");
+    while (head != NULL)
+    {
+        printf(" %d", head->data);
+        head = head->next;
+    }
+    printf("\n");
+}
+
 void InsertEnd(int data)
 {
     Node *temp = new Node();
@@ -91,6 +117,25 @@ void InsertEnd(int data)
     }
     temp->next = temp2->next;
     temp2->next = temp;
+}
+
+Node *InsertEnd(Node *head, int data)
+{
+    Node *temp = new Node();
+    temp->data = data;
+    temp->next = NULL;
+
+    if (head == NULL)
+        head = temp;
+    else
+    {
+        Node *temp2 = head;
+        while (temp2->next != NULL)
+            temp2 = temp2->next;
+
+        temp2->next = temp;
+    }
+    return head;
 }
 
 void Delete(int pos)
@@ -113,4 +158,35 @@ void Delete(int pos)
         temp->next = temp2->next;
 
     free(temp2);
+}
+
+void Reverse()
+{
+    Node *current, *prev, *next;
+    current = head;
+    prev = NULL;
+    while (current != NULL)
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    head = prev;
+}
+
+Node *Reverse(Node *head)
+{
+    Node *current, *prev, *next;
+    current = head;
+    prev = NULL;
+    while (current != NULL)
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    head = prev;
+    return head;
 }
