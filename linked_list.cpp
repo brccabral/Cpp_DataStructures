@@ -7,43 +7,56 @@ typedef struct Node
     struct Node *next;
 } Node;
 
-void Insert(int x, Node **head);
-void Print(Node *head);
+void Insert(int data, int pos);
+void Print();
+
+Node *head;
 
 int main()
 {
-    Node *head = NULL;
+    head = NULL;
 
-    printf("How many numbers?\n");
-    int n, i, x;
-    scanf("%d", &n); // get input
-    for (i = 0; i < n; i++)
-    {
-        printf("Enter the number\n");
-        scanf("%d", &x);
-        Insert(x, &head);
-    }
-    Print(head);
+    Insert(2, 1); // 2
+    Insert(3, 2); // 2,3
+    Insert(4, 1); // 4,2,3
+    Insert(5, 2); // 4,5,2,3
+    Print();
 
     return (0);
 }
 
-// Insert at beginning of the list
-void Insert(int x, Node **pointerToHead)
+// Insert at position "pos" of the list
+void Insert(int data, int pos)
 {
-    Node *temp = (Node *)malloc(sizeof(Node));
-    temp->data = x;
-    temp->next = *pointerToHead;
-    *pointerToHead = temp;
+    Node *temp = new Node();
+    temp->data = data;
+    temp->next = NULL;
+
+    if (pos == 1)
+    {
+        temp->next = head;
+        head = temp;
+        return;
+    }
+
+    Node *temp2 = head;
+    for (int i = 1; i < pos - 1; i++) // start from 1 because our list starts on 1
+    {
+        temp2 = temp2->next;
+    }
+
+    temp->next = temp2->next;
+    temp2->next = temp;
 }
 
-void Print(Node *head)
+void Print()
 {
+    Node *temp = head;
     printf("List is:");
-    while (head != NULL)
+    while (temp != NULL)
     {
-        printf(" %d", head->data);
-        head = head->next;
+        printf(" %d", temp->data);
+        temp = temp->next;
     }
     printf("\n");
 }
