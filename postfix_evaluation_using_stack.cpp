@@ -7,9 +7,11 @@
 #include <iostream>
 #include <stack>
 #include <string>
+#include <math.h>
 
 // Function to evaluate Postfix expression and return output
 int EvaluatePostfix(std::string expression);
+int EvaluatePrefix(std::string expression);
 
 // Function to perform an operation and return output.
 int PerformOperation(char operation, int operand1, int operand2);
@@ -22,10 +24,16 @@ bool IsNumericDigit(char C);
 
 int main()
 {
+    int result;
     std::string expression;
     std::cout << "Enter Postfix Expression \n";
     getline(std::cin, expression);
-    int result = EvaluatePostfix(expression);
+    result = EvaluatePostfix(expression);
+    std::cout << "Output = " << result << "\n";
+
+    std::cout << "Enter Prefix Expression \n";
+    getline(std::cin, expression);
+    result = EvaluatePrefix(expression);
     std::cout << "Output = " << result << "\n";
 }
 
@@ -73,6 +81,54 @@ int EvaluatePostfix(std::string expression)
             // decrement i because it will be incremented in increment section of loop once again.
             // We do not want to skip the non-numeric character by incrementing i twice.
             i--;
+
+            // Push operand on stack.
+            S.push(operand);
+        }
+    }
+    // If expression is in correct format, Stack will finally have one element. This will be the output.
+    return S.top();
+}
+
+// Function to evaluate Postfix expression and return output
+int EvaluatePrefix(std::string expression)
+{
+    // Declaring a Stack from Standard template library in C++.
+    std::stack<int> S;
+
+    for (int i = expression.length() - 1; i >= 0; i--)
+    {
+
+        // Scanning each character from left.
+        // If character is a delimitter, move on.
+        if (expression[i] == ' ' || expression[i] == ',')
+            continue;
+
+        // If character is operator, pop two elements from stack, perform operation and push the result back.
+        else if (IsOperator(expression[i]))
+        {
+            // Pop two operands.
+            int operand1 = S.top();
+            S.pop();
+            int operand2 = S.top();
+            S.pop();
+            // Perform operation
+            int result = PerformOperation(expression[i], operand1, operand2);
+            // Push back result of operation on stack.
+            S.push(result);
+        }
+        else if (IsNumericDigit(expression[i]))
+        {
+            int operand = 0;
+            int k = 0;
+            while (i >= 0 && IsNumericDigit(expression[i]))
+            {
+                // right to left scan
+                operand = ((expression[i] - '0') * pow(10, k)) + (operand);
+                i--;
+                k++;
+            }
+            i++;
 
             // Push operand on stack.
             S.push(operand);
