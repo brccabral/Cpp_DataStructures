@@ -157,6 +157,27 @@ int FindHeight(BstNode *curr)
     return max(FindHeight(curr->left), FindHeight(curr->right)) + 1;
 }
 
+// Function to print Nodes in a binary tree in Level order
+void LevelOrder(BstNode *root)
+{
+    if (root == NULL)
+        return;
+    queue<BstNode *> Q;
+    Q.push(root);
+    // while there is at least one discovered node
+    while (!Q.empty())
+    {
+        BstNode *current = Q.front();
+        Q.pop(); // removing the element at front
+        printf("%c ", current->data);
+        // cout << current->data << " ";
+        if (current->left != NULL)
+            Q.push(current->left);
+        if (current->right != NULL)
+            Q.push(current->right);
+    }
+}
+
 int main()
 {
     BstNode *root = NULL; // Creating an empty tree
@@ -168,10 +189,14 @@ int main()
     root = Insert(root, 8);
     root = Insert(root, 12);
     root = Insert(root, 13);
+
     // Ask user to enter a number.
     int number;
+    char *buffer = NULL;
+    size_t n = 0;
     cout << "Enter number be searched\n";
-    cin >> number;
+    getline(&buffer, &n, stdin);
+    sscanf(buffer, "%d", &number);
     // If number is found, print "FOUND"
     if (Search(root, number) == true)
         cout << "Found\n";
@@ -194,10 +219,22 @@ int main()
     root_no_rec = Insert(root_no_rec, 42);
     // Ask user to enter a number.
     cout << "Enter number be searched\n";
-    cin >> number;
+    getline(&buffer, &n, stdin);
+    sscanf(buffer, "%d", &number);
     // If number is found, print "FOUND"
     if (Search(root_no_rec, number) == true)
         cout << "Found\n";
     else
         cout << "Not Found\n";
+
+    BstNode *root_order = NULL;
+    root_order = Insert(root_order, 'M');
+    root_order = Insert(root_order, 'B');
+    root_order = Insert(root_order, 'Q');
+    root_order = Insert(root_order, 'Z');
+    root_order = Insert(root_order, 'A');
+    root_order = Insert(root_order, 'C');
+
+    LevelOrder(root_order); // MBQACZ
+    printf("\n");
 }
