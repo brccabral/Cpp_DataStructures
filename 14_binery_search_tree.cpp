@@ -178,6 +178,41 @@ void LevelOrder(BstNode *root)
     }
 }
 
+// Function to visit nodes in Preorder
+void Preorder(struct BstNode *root)
+{
+    // base condition for recursion
+    // if tree/sub-tree is empty, return and exit
+    if (root == NULL)
+        return;
+
+    printf("%c ", root->data); // Print data
+    Preorder(root->left);      // Visit left subtree
+    Preorder(root->right);     // Visit right subtree
+}
+
+// Function to visit nodes in Inorder
+void Inorder(BstNode *root)
+{
+    if (root == NULL)
+        return;
+
+    Inorder(root->left);       // Visit left subtree
+    printf("%c ", root->data); // Print data
+    Inorder(root->right);      // Visit right subtree
+}
+
+// Function to visit nodes in Postorder
+void Postorder(BstNode *root)
+{
+    if (root == NULL)
+        return;
+
+    Postorder(root->left);     // Visit left subtree
+    Postorder(root->right);    // Visit right subtree
+    printf("%c ", root->data); // Print data
+}
+
 int main()
 {
     BstNode *root = NULL; // Creating an empty tree
@@ -235,6 +270,15 @@ int main()
     root_order = Insert(root_order, 'A');
     root_order = Insert(root_order, 'C');
 
-    LevelOrder(root_order); // MBQACZ
+    LevelOrder(root_order); // M B Q A C Z
+    printf("\n");
+
+    Preorder(root_order); // M B A C Q Z
+    printf("\n");
+
+    Inorder(root_order); // A B C M Q Z
+    printf("\n");
+
+    Postorder(root_order); // A C B Z Q M
     printf("\n");
 }
