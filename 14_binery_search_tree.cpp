@@ -149,6 +149,14 @@ int FindMaxRecursive(BstNode *curr)
     return FindMaxRecursive(curr->right);
 }
 
+int FindHeight(BstNode *curr)
+{
+    if (curr == NULL)
+        return -1;
+
+    return max(FindHeight(curr->left), FindHeight(curr->right)) + 1;
+}
+
 int main()
 {
     BstNode *root = NULL; // Creating an empty tree
@@ -159,6 +167,7 @@ int main()
     root = Insert(root, 25);
     root = Insert(root, 8);
     root = Insert(root, 12);
+    root = Insert(root, 13);
     // Ask user to enter a number.
     int number;
     cout << "Enter number be searched\n";
@@ -173,6 +182,7 @@ int main()
     printf("FindMax: %d\n", FindMax(root));
     printf("FindMinRecursive: %d\n", FindMinRecursive(root));
     printf("FindMaxRecursive: %d\n", FindMaxRecursive(root));
+    printf("FindHeight: %d\n", FindHeight(root));
 
     BstNode *root_no_rec = NULL; // Creating an empty tree
     /*Code to test the logic*/
