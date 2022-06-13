@@ -177,6 +177,26 @@ void LevelOrder(BstNode *root)
             Q.push(current->right);
     }
 }
+// Function to print Nodes in a binary tree in Level order
+void LevelOrderInt(BstNode *root)
+{
+    if (root == NULL)
+        return;
+    queue<BstNode *> Q;
+    Q.push(root);
+    // while there is at least one discovered node
+    while (!Q.empty())
+    {
+        BstNode *current = Q.front();
+        Q.pop(); // removing the element at front
+        printf("%d ", current->data);
+        // cout << current->data << " ";
+        if (current->left != NULL)
+            Q.push(current->left);
+        if (current->right != NULL)
+            Q.push(current->right);
+    }
+}
 
 // Function to visit nodes in Preorder
 void Preorder(struct BstNode *root)
@@ -211,6 +231,81 @@ void Postorder(BstNode *root)
     Postorder(root->left);     // Visit left subtree
     Postorder(root->right);    // Visit right subtree
     printf("%c ", root->data); // Print data
+}
+
+// check for all values on left are lesser than value
+bool IsSubtreeLesser(BstNode *curr, int value)
+{
+    if (curr == NULL)
+        return true;
+
+    if (curr->data <= value && IsSubtreeLesser(curr->left, value) && IsSubtreeLesser(curr->right, value))
+        return true;
+    return false;
+}
+
+// check for all values on right are greater than value
+bool IsSubtreeGreater(BstNode *curr, int value)
+{
+    if (curr == NULL)
+        return true;
+
+    if (curr->data > value && IsSubtreeGreater(curr->left, value) && IsSubtreeGreater(curr->right, value))
+        return true;
+    return false;
+}
+
+// check if a binary tree is a binary SEARCH tree
+// if it follow the rule of left is less or equal
+// root and right is greater than root
+bool IsBinarySearchTree(BstNode *curr)
+{
+    if (curr == NULL)
+        return true;
+
+    if (IsSubtreeLesser(curr->left, curr->data) && IsSubtreeGreater(curr->right, curr->data) && IsBinarySearchTree(curr->left) && IsBinarySearchTree(curr->right))
+        return true;
+    return false;
+}
+
+BstNode *FakeBST1(BstNode *root)
+{
+    root = GetNewNode(7);
+    root->left = GetNewNode(4);
+    root->left->left = GetNewNode(1);
+    root->left->right = GetNewNode(6);
+    root->right = GetNewNode(9);
+    return root;
+}
+
+BstNode *FakeBST2(BstNode *root)
+{
+    root = GetNewNode(8);
+    root->left = GetNewNode(6);
+    root->left->left = GetNewNode(4);
+    return root;
+}
+
+BstNode *FakeBST3(BstNode *root)
+{
+    root = GetNewNode(10);
+    root->left = GetNewNode(5);
+    root->right = GetNewNode(16);
+    root->left->right = GetNewNode(7);
+    root->left->right->right = GetNewNode(11);
+    root->left->left = GetNewNode(4);
+    root->left->left->left = GetNewNode(1);
+    return root;
+}
+
+BstNode *FakeBST4(BstNode *root)
+{
+    root = GetNewNode(5);
+    root->left = GetNewNode(1);
+    root->right = GetNewNode(8);
+    root->right->left = GetNewNode(9);
+    root->right->right = GetNewNode(12);
+    return root;
 }
 
 int main()
@@ -281,4 +376,25 @@ int main()
 
     Postorder(root_order); // A C B Z Q M
     printf("\n");
+
+    BstNode *root_check = NULL;
+    root_check = FakeBST1(root_check);
+    LevelOrderInt(root_check);
+    printf("\n");
+    printf("IsBinarySearchTree: %d\n", IsBinarySearchTree(root_check));
+
+    root_check = FakeBST2(root_check);
+    LevelOrderInt(root_check);
+    printf("\n");
+    printf("IsBinarySearchTree: %d\n", IsBinarySearchTree(root_check));
+
+    root_check = FakeBST3(root_check);
+    LevelOrderInt(root_check);
+    printf("\n");
+    printf("IsBinarySearchTree: %d\n", IsBinarySearchTree(root_check));
+
+    root_check = FakeBST4(root_check);
+    LevelOrderInt(root_check);
+    printf("\n");
+    printf("IsBinarySearchTree: %d\n", IsBinarySearchTree(root_check));
 }
