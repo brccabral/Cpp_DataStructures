@@ -258,6 +258,7 @@ bool IsSubtreeGreater(BstNode *curr, int value)
 // check if a binary tree is a binary SEARCH tree
 // if it follow the rule of left is less or equal
 // root and right is greater than root
+// The time complexity is O(n^2)
 bool IsBinarySearchTree(BstNode *curr)
 {
     if (curr == NULL)
@@ -266,6 +267,25 @@ bool IsBinarySearchTree(BstNode *curr)
     if (IsSubtreeLesser(curr->left, curr->data) && IsSubtreeGreater(curr->right, curr->data) && IsBinarySearchTree(curr->left) && IsBinarySearchTree(curr->right))
         return true;
     return false;
+}
+// check if a binary tree is a binary SEARCH tree
+// if it follow the rule of left is less or equal
+// root and right is greater than root
+// The time complexity is O(n)
+bool IsBstFast(BstNode *curr, int minValue, int maxValue)
+{
+    if (curr == NULL)
+        return true;
+
+    if (curr->data <= minValue && curr->data < maxValue && IsBstFast(curr->left, minValue, curr->data) && IsBstFast(curr->right, curr->data, maxValue))
+        return true;
+    return false;
+}
+
+// another option is to get Inorder values and check if they are sorted
+bool IsBinarySearchTreeFast(BstNode *curr)
+{
+    return IsBstFast(curr, INT_MIN, INT_MAX);
 }
 
 BstNode *FakeBST1(BstNode *root)
@@ -382,19 +402,23 @@ int main()
     LevelOrderInt(root_check);
     printf("\n");
     printf("IsBinarySearchTree: %d\n", IsBinarySearchTree(root_check));
+    printf("IsBinarySearchTreeFast: %d\n", IsBinarySearchTreeFast(root_check));
 
     root_check = FakeBST2(root_check);
     LevelOrderInt(root_check);
     printf("\n");
     printf("IsBinarySearchTree: %d\n", IsBinarySearchTree(root_check));
+    printf("IsBinarySearchTreeFast: %d\n", IsBinarySearchTreeFast(root_check));
 
     root_check = FakeBST3(root_check);
     LevelOrderInt(root_check);
     printf("\n");
     printf("IsBinarySearchTree: %d\n", IsBinarySearchTree(root_check));
+    printf("IsBinarySearchTreeFast: %d\n", IsBinarySearchTreeFast(root_check));
 
     root_check = FakeBST4(root_check);
     LevelOrderInt(root_check);
     printf("\n");
     printf("IsBinarySearchTree: %d\n", IsBinarySearchTree(root_check));
+    printf("IsBinarySearchTreeFast: %d\n", IsBinarySearchTreeFast(root_check));
 }
