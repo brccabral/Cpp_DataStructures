@@ -2,6 +2,7 @@
 // Simple program to create a BST of integers and search an element in it
 
 #include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -57,7 +58,8 @@ BstNode *InsertNoRecursion(BstNode *root, int data)
         // if data to be inserted is lesser, insert in left subtree.
         if (data <= curr->data)
         {
-            if(curr->left == NULL){
+            if (curr->left == NULL)
+            {
                 curr->left = GetNewNode(data);
                 return root;
             }
@@ -66,7 +68,8 @@ BstNode *InsertNoRecursion(BstNode *root, int data)
         // else, insert in right subtree.
         else
         {
-            if(curr->right == NULL){
+            if (curr->right == NULL)
+            {
                 curr->right = GetNewNode(data);
                 return root;
             }
@@ -96,6 +99,56 @@ bool Search(BstNode *root, int data)
     }
 }
 
+int FindMin(BstNode *curr)
+{
+    if (curr == NULL)
+    {
+        cout << "Error: tree is empty\n";
+        return INT_MIN;
+    }
+    while (curr->left != NULL)
+        curr = curr->left;
+    return curr->data;
+}
+
+int FindMinRecursive(BstNode *curr)
+{
+    if (curr == NULL)
+    {
+        cout << "Error: tree is empty\n";
+        return INT_MIN;
+    }
+    else if (curr->left == NULL)
+        return curr->data;
+
+    return FindMinRecursive(curr->left);
+}
+
+int FindMax(BstNode *curr)
+{
+    if (curr == NULL)
+    {
+        cout << "Error: tree is empty\n";
+        return INT_MIN;
+    }
+    while (curr->right != NULL)
+        curr = curr->right;
+    return curr->data;
+}
+
+int FindMaxRecursive(BstNode *curr)
+{
+    if (curr == NULL)
+    {
+        cout << "Error: tree is empty\n";
+        return INT_MIN;
+    }
+    else if (curr->right == NULL)
+        return curr->data;
+
+    return FindMaxRecursive(curr->right);
+}
+
 int main()
 {
     BstNode *root = NULL; // Creating an empty tree
@@ -115,6 +168,11 @@ int main()
         cout << "Found\n";
     else
         cout << "Not Found\n";
+
+    printf("FindMin: %d\n", FindMin(root));
+    printf("FindMax: %d\n", FindMax(root));
+    printf("FindMinRecursive: %d\n", FindMinRecursive(root));
+    printf("FindMaxRecursive: %d\n", FindMaxRecursive(root));
 
     BstNode *root_no_rec = NULL; // Creating an empty tree
     /*Code to test the logic*/
