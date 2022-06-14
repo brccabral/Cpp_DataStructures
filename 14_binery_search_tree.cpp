@@ -315,6 +315,7 @@ BstNode *FakeBST2(BstNode *root)
 
 BstNode *FakeBST3(BstNode *root)
 {
+    // this is not a BST, one value is not in order
     root = GetNewNode(10);
     root->left = GetNewNode(5);
     root->right = GetNewNode(16);
@@ -327,6 +328,7 @@ BstNode *FakeBST3(BstNode *root)
 
 BstNode *FakeBST4(BstNode *root)
 {
+    // this is not a BST, one value is not in order
     root = GetNewNode(5);
     root->left = GetNewNode(1);
     root->right = GetNewNode(8);
@@ -391,6 +393,47 @@ BstNode *Delete(BstNode *root, int data)
         }
     }
     return root;
+}
+
+BstNode *Find(BstNode *curr, int data)
+{
+    if (curr == NULL)
+        return NULL;
+    else if (data < curr->data)
+        return Find(curr->left, data);
+    else if (data > curr->data)
+        return Find(curr->right, data);
+    return curr;
+}
+
+// Find Inorder Successor in a BST
+BstNode *GetSuccessor(BstNode *root, int data)
+{
+    BstNode *curr = Find(root, data); // O(h) - h = height of tree
+    if (curr == NULL)
+        return NULL;
+    // case 1: curr node has right subtree
+    //  get the left most value of right = Minimum value
+    if (curr->right != NULL)
+        return FindMinNode(curr->right); // O(h) - h = height of tree
+    // case 2: no right subtree  // O(h) - h = height of tree
+    //  get the ancestor that has NOT been visited yet
+    else
+    {
+        BstNode *successor = NULL;
+        BstNode *ancestor = root;
+        while (ancestor != curr)
+        {
+            if (curr->data < ancestor->data)
+            {
+                successor = ancestor; // save parent before descend one level
+                ancestor = ancestor->left;
+            }
+            else
+                ancestor = ancestor->right;
+        }
+        return successor;
+    }
 }
 
 int main()
@@ -489,9 +532,22 @@ int main()
 
     BstNode *root_delete = NULL;
     root_delete = FakeBST5(root_delete);
-    LevelOrderInt(root_delete); // M B Q A C Z
+    LevelOrderInt(root_delete); // 12 5 15 3 7 13 17 1 9
     printf("\n");
     Delete(root_delete, 15);
-    LevelOrderInt(root_delete); // M B Q A C Z
+    LevelOrderInt(root_delete); // 12 5 17 3 7 13 1 9
     printf("\n");
+
+    BstNode *root_successor = NULL;
+    root_successor = Insert(root_successor, 5);
+    root_successor = Insert(root_successor, 10);
+    root_successor = Insert(root_successor, 3);
+    root_successor = Insert(root_successor, 4);
+    root_successor = Insert(root_successor, 1);
+    root_successor = Insert(root_successor, 11);
+    BstNode *successor = GetSuccessor(root_successor, 1);
+    if (successor == NULL)
+        printf("No successor Found\n");
+    else
+        printf("Successor is %d\n", successor->data); // 3
 }
