@@ -111,6 +111,13 @@ int FindMin(BstNode *curr)
     return curr->data;
 }
 
+BstNode *FindMinNode(BstNode *curr)
+{
+    while (curr->left != NULL)
+        curr = curr->left;
+    return curr;
+}
+
 int FindMinRecursive(BstNode *curr)
 {
     if (curr == NULL)
@@ -328,6 +335,64 @@ BstNode *FakeBST4(BstNode *root)
     return root;
 }
 
+BstNode *FakeBST5(BstNode *root)
+{
+    root = GetNewNode(12);
+    root->left = GetNewNode(5);
+    root->right = GetNewNode(15);
+    root->left->left = GetNewNode(3);
+    root->left->right = GetNewNode(7);
+    root->right->left = GetNewNode(13);
+    root->right->right = GetNewNode(17);
+    root->left->left->left = GetNewNode(1);
+    root->left->right->right = GetNewNode(9);
+    return root;
+}
+
+BstNode *Delete(BstNode *root, int data)
+{
+    if (root == NULL)
+        return root;
+    else if (data < root->data)
+        root->left = Delete(root->left, data);
+    else if (data > root->data)
+        root->right = Delete(root->right, data);
+    else // value is equal
+    {
+        // case 1: no child
+        if (root->left == NULL && root->right == NULL)
+        {
+            delete root;
+            root = NULL;
+        }
+        // case 2: one child right
+        else if (root->left == NULL)
+        {
+            BstNode *temp = root;
+            root = root->right;
+            delete temp;
+        }
+        // case 2: one child left
+        else if (root->right == NULL)
+        {
+            BstNode *temp = root;
+            root = root->left;
+            delete temp;
+        }
+        // case 3: 2 children. Find Min on right side
+        else
+        {
+            BstNode *temp = FindMinNode(root->right);
+            root->data = temp->data;
+            root->right = Delete(root->right, temp->data);
+            // int value = FindMin(root->right);
+            // root->data = value;
+            // root->right = Delete(root->right, value);
+        }
+    }
+    return root;
+}
+
 int main()
 {
     BstNode *root = NULL; // Creating an empty tree
@@ -421,4 +486,12 @@ int main()
     printf("\n");
     printf("IsBinarySearchTree: %d\n", IsBinarySearchTree(root_check));
     printf("IsBinarySearchTreeFast: %d\n", IsBinarySearchTreeFast(root_check));
+
+    BstNode *root_delete = NULL;
+    root_delete = FakeBST5(root_delete);
+    LevelOrderInt(root_delete); // M B Q A C Z
+    printf("\n");
+    Delete(root_delete, 15);
+    LevelOrderInt(root_delete); // M B Q A C Z
+    printf("\n");
 }
